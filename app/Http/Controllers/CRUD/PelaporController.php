@@ -8,9 +8,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\TOOLS\ImgController;
 
 class PelaporController extends Controller
 {
+    public $imgController;
+
+    public function __construct()
+    {
+        // memanggil controller image
+        $this->imgController = new ImgController();
+    }
+
     protected function spartaValidation($request, $id = "")
     {
         $required = "";
@@ -58,7 +67,6 @@ class PelaporController extends Controller
     {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -74,20 +82,11 @@ class PelaporController extends Controller
             return $validate;
         }
         // export foto ktp
-        $foto_ktp = $data_req['foto_ktp'];
-        // set name image and get extension
-        $foto_ktp_name = time() . '.' . $foto_ktp->getClientOriginalExtension();
-        // destination path
-        $destinationPath = Storage::putFileAs('foto_ktp', $foto_ktp, $foto_ktp_name);
-        $data_req['foto_ktp'] = "storage/$destinationPath";
-
+        $foto_ktp = $this->imgController->addImage('foto_ktp', $data_req['foto_ktp']);
+        $data_req['foto_ktp'] = "storage/$foto_ktp";
         // export foto kk
-        $foto_kk = $data_req['foto_kk'];
-        // set name image and get extension
-        $foto_kk_name = time() . '.' . $foto_kk->getClientOriginalExtension();
-        // destination path
-        $destinationPath = Storage::putFileAs('foto_kk', $foto_kk, $foto_kk_name);
-        $data_req['foto_kk'] = "storage/$destinationPath";
+        $foto_kk = $this->imgController->addImage('foto_kk', $data_req['foto_kk']);
+        $data_req['foto_kk'] = "storage/$foto_kk";
 
         Pelapor::create($data_req);
 
