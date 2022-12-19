@@ -14,7 +14,7 @@ class DistrikFactory extends Factory
     public function definition()
     {
         return [
-            'nama' => $this->faker->citySuffix()
+            'nama' => $this->faker->cityPrefix()
         ];
     }
 }
