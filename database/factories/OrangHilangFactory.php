@@ -15,11 +15,9 @@ class OrangHilangFactory extends Factory
      */
     public function definition()
     {
-        $distrik_id = Distrik::all()->random()->id;
         $pelapor_id = Pelapor::all()->random()->id;
         return [
             'pelapor_id' => $pelapor_id,
-            'distrik_id' => $distrik_id,
             'nama' => $this->faker->name(),
             'umur' => $this->faker->numberBetween(10, 80),
             'no_ktp' => $this->faker->numerify(),

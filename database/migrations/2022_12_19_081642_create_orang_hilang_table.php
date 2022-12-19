@@ -16,7 +16,6 @@ class CreateOrangHilangTable extends Migration
         Schema::create('orang_hilang', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pelapor_id')->constrained('pelapor')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('distrik_id')->constrained('distrik')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('nama');
             $table->smallInteger('umur');
             $table->string('no_ktp', 30)->nullable();

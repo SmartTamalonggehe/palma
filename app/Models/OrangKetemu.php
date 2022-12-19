@@ -14,6 +14,6 @@ class OrangKetemu extends Model
 
     public function orangHilang()
     {
-        return $this->belongsTo(Orang_hilang::class);
+        return $this->belongsTo(OrangHilang::class);
     }
 }
