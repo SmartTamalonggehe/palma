@@ -16,6 +16,7 @@ class CreatePelaporTable extends Migration
         Schema::create('pelapor', function (Blueprint $table) {
             $table->id();
             $table->foreignId('distrik_id')->constrained('distrik')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('nama');
             $table->string('no_ktp', 30)->unique();
             $table->string('no_kk', 30);
@@ -23,7 +24,7 @@ class CreatePelaporTable extends Migration
             $table->text('alamat');
             $table->string('foto_ktp');
             $table->string('foto_kk');
-            $table->string('status', 30);
+            $table->string('status', 30); // diterima, diproses, ditolak
             $table->timestamps();
         });
     }

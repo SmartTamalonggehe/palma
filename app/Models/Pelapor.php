@@ -15,4 +15,9 @@ class Pelapor extends Model
     {
         return $this->belongsTo(Distrik::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

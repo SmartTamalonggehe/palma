@@ -43,6 +43,7 @@ class DistrikController extends Controller
         $limit = $request->limit;
         $search = $request->search;
         $data = Distrik::where('nama', "like", "%$search%")
+            ->orderBy('nama')
             ->paginate($limit);
         return response()->json($data, 200);
     }

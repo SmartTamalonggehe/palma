@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\CRUD;
 
+use App\Models\User;
 use App\Models\Pelapor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\File;
 use App\Http\Controllers\TOOLS\ImgController;
 
 class PelaporController extends Controller
@@ -28,10 +30,16 @@ class PelaporController extends Controller
         }
         $rules = [
             'nama' => 'required',
+            'email' => 'required|unique:users',
+            'no_ktp' => 'required|unique:pelapor',
+            'no_hp' => 'required|unique:pelapor',
         ];
 
         $messages = [
             'nama.required' => 'Nama Pelapor harus diisi.',
+            'email.unique' => 'Email sudah ada.',
+            'no_ktp.unique' => 'No. KTP sudah ada.',
+            'no_hp.unique' => 'No. HP sudah ada.',
         ];
         $validator = Validator::make($request, $rules, $messages);
 
@@ -53,7 +61,7 @@ class PelaporController extends Controller
     {
         $limit = $request->limit;
         $search = $request->search;
-        $data = Pelapor::with('distrik')->where('nama', "like", "%$search%")
+        $data = Pelapor::with('distrik', 'user')->where('nama', "like", "%$search%")
             ->paginate($limit);
         return response()->json($data, 200);
     }
@@ -88,9 +96,22 @@ class PelaporController extends Controller
         $foto_kk = $this->imgController->addImage('foto_kk', $data_req['foto_kk']);
         $data_req['foto_kk'] = "storage/$foto_kk";
 
+        // create user
+        $user = User::create([
+            'name' => $data_req['nama'],
+            'email' => $data_req['email'],
+            'password' => Hash::make($data_req['password']),
+            'show_password' => $data_req['password'],
+            'role' => 'pelapor'
+        ]);
+        unset($data_req['email']);
+        unset($data_req['password']);
+
+        $data_req['user_id'] = $user->id;
+        $data_req['status'] = 'diproses';
         Pelapor::create($data_req);
 
-        $data = Pelapor::with('distrik')->latest()->first();
+        $data = Pelapor::with('distrik', 'user')->latest()->first();
         $pesan = [
             'judul' => 'Berhasil',
             'type' => 'success',
