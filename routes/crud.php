@@ -16,3 +16,6 @@ Route::resources([
     'laporan' => LaporanController::class,
     'orang-ketemu' => OrangKetemuController::class,
 ]);
+
+Route::post('pelapor/ubah-status/{id}', [PelaporController::class, 'ubahStatus']);
+// Route::get('pelapor/ubah-status/{id}', [PelaporController::class, 'ubahStatus']);

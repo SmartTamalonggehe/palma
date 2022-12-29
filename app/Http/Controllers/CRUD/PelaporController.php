@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Pelapor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\EMAIL\PelaporNotifController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -15,11 +16,13 @@ use App\Http\Controllers\TOOLS\ImgController;
 class PelaporController extends Controller
 {
     public $imgController;
+    public $email;
 
     public function __construct()
     {
         // memanggil controller image
         $this->imgController = new ImgController();
+        $this->email = new PelaporNotifController();
     }
 
     protected function spartaValidation($request, $id = "")
@@ -200,6 +203,27 @@ class PelaporController extends Controller
             'judul' => 'Berhasil',
             'type' => 'success',
             'pesan' => 'Data berhasil dihapus.',
+            'data' => $data,
+        ];
+        return response()->json($pesan, 200);
+    }
+
+    public function ubahStatus(Request $request, $id)
+    {
+        $data_req = $request->all();
+        // find data by id
+        Pelapor::find($id)->update($data_req);
+
+        $data = Pelapor::with('distrik', 'user')->find($id);
+
+        // return view('mail.pelapor-notif', compact('data'));
+
+        $mail = $this->email->index($data);
+
+        $pesan = [
+            'judul' => 'Berhasil',
+            'type' => 'success',
+            'pesan' => "Status berhasil diubah dan $mail",
             'data' => $data,
         ];
         return response()->json($pesan, 200);
