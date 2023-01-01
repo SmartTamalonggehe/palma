@@ -20,4 +20,9 @@ class OrangHilang extends Model
     {
         return $this->belongsTo(Pelapor::class);
     }
+
+    public function lokasi()
+    {
+        return $this->hasOne(Lokasi::class, 'orang_hilang_id', 'id');
+    }
 }

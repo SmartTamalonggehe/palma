@@ -46,7 +46,7 @@
             @elseif ($data->status === 'diproses')
                 <p>Data anda dalam proses pemeriksaan, mohon menunggu.</p>
             @else
-                <p>Data anda ditolak, kemungkinan ada beberapa data yang tidak relevan. Terimakasih.</p>
+                <p>Data anda ditolak, kemungkinan ada beberapa data yang tidak relevan.</p>
             @endif
             <h3 class="text-center">Terimakasih</h3>
         </div>

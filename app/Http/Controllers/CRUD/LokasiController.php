@@ -44,7 +44,7 @@ class LokasiController extends Controller
         $limit = $request->limit;
         $search = $request->search;
         $data = Lokasi::with(['orangHilang' => function ($orangHilang) {
-            $orangHilang->with('distrik', 'pelapor');
+            $orangHilang->with('pelapor');
         }])
             ->whereHas('orangHilang', function (Builder $query) use ($search) {
                 $query->where('nama', 'like', "%$search%");
@@ -77,15 +77,22 @@ class LokasiController extends Controller
         if ($validate) {
             return $validate;
         }
-        Lokasi::create($data_req);
+        // cek apakah data sudah ada
+        $orang_hilang = Lokasi::where('orang_hilang_id', $data_req['orang_hilang_id'])->first();
+
+        if ($orang_hilang) {
+            $orang_hilang->update($data_req);
+        } else {
+            Lokasi::create($data_req);
+        }
 
         $data = Lokasi::with(['orangHilang' => function ($orangHilang) {
-            $orangHilang->with('distrik', 'pelapor');
+            $orangHilang->with('pelapor');
         }])->latest()->first();
         $pesan = [
             'judul' => 'Berhasil',
             'type' => 'success',
-            'pesan' => 'Data berhasil ditambahkan.',
+            'pesan' => 'Lokasi berhasil disimpan.',
             'data' => $data,
         ];
         return response()->json($pesan, 200);
@@ -133,7 +140,7 @@ class LokasiController extends Controller
         Lokasi::find($id)->update($data_req);
 
         $data = Lokasi::with(['orangHilang' => function ($orangHilang) {
-            $orangHilang->with('distrik', 'pelapor');
+            $orangHilang->with('pelapor');
         }])->find($id);
         $pesan = [
             'judul' => 'Berhasil',

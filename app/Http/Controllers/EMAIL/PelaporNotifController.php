@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\Mail;
 
 class PelaporNotifController extends Controller
 {
-    public function index($mailData = "")
-
+    public function index($mailData)
     {
-        $mail = Mail::to('smartspartacus@gmail.com')->send(new VerifikasiPelapor($mailData));
+        Mail::to($mailData->user->email)->send(new VerifikasiPelapor($mailData));
         return 'email berhasil dikirim';
     }
 }

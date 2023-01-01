@@ -27,10 +27,14 @@ class OrangHilangController extends Controller
         }
         $rules = [
             'nama' => 'required',
+            'foto' => $required . '|mimes:jpeg,jpg,png,gif|max:2048',
         ];
 
         $messages = [
-            'nama.required' => 'Nama Pelapor harus diisi.',
+            'nama.required' => 'Nama Orang hilang harus diisi.',
+            'foto.required' => 'Gambar harus diisi.',
+            'foto.mimes' => 'Format gambar harus jpg, png, gif atau jpeg.',
+            'foto.max' => 'Ukuran gambar maksimal 2MB.',
         ];
         $validator = Validator::make($request, $rules, $messages);
 
@@ -52,7 +56,7 @@ class OrangHilangController extends Controller
     {
         $limit = $request->limit;
         $search = $request->search;
-        $data = OrangHilang::with('distrik', 'pelapor')->where('nama', "like", "%$search%")
+        $data = OrangHilang::with('pelapor', 'lokasi')->where('nama', "like", "%$search%")
             ->paginate($limit);
         return response()->json($data, 200);
     }
@@ -87,10 +91,11 @@ class OrangHilangController extends Controller
         } else {
             $data_req['foto'] = "storage/default.png";
         }
+        $data_req['status'] = 'diproses';
 
         OrangHilang::create($data_req);
 
-        $data = OrangHilang::with('distrik', 'pelapor')->latest()->first();
+        $data = OrangHilang::with('pelapor', 'lokasi')->latest()->first();
         $pesan = [
             'judul' => 'Berhasil',
             'type' => 'success',
@@ -106,9 +111,15 @@ class OrangHilangController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $limit = $request->limit;
+        $search = $request->search;
+        $data = OrangHilang::with('pelapor', 'lokasi')
+            ->where('pelapor_id', $id)
+            ->where('nama', "like", "%$search%")
+            ->paginate($limit);
+        return response()->json($data, 200);
     }
 
     /**

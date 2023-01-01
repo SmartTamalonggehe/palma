@@ -36,6 +36,7 @@ class PelaporController extends Controller
             'email' => 'required|unique:users',
             'no_ktp' => 'required|unique:pelapor',
             'no_hp' => 'required|unique:pelapor',
+            'foto_ktp' => $required . '|mimes:jpeg,jpg,png,gif|max:2048',
         ];
 
         $messages = [
@@ -43,6 +44,9 @@ class PelaporController extends Controller
             'email.unique' => 'Email sudah ada.',
             'no_ktp.unique' => 'No. KTP sudah ada.',
             'no_hp.unique' => 'No. HP sudah ada.',
+            'foto_ktp.required' => 'Gambar harus diisi.',
+            'foto_ktp.mimes' => 'Format gambar harus jpg, png, gif atau jpeg.',
+            'foto_ktp.max' => 'Ukuran gambar maksimal 2MB.',
         ];
         $validator = Validator::make($request, $rules, $messages);
 
@@ -105,7 +109,6 @@ class PelaporController extends Controller
             'email' => $data_req['email'],
             'password' => Hash::make($data_req['password']),
             'show_password' => $data_req['password'],
-            'role' => 'pelapor'
         ]);
         unset($data_req['email']);
         unset($data_req['password']);
@@ -215,6 +218,18 @@ class PelaporController extends Controller
         Pelapor::find($id)->update($data_req);
 
         $data = Pelapor::with('distrik', 'user')->find($id);
+        // ganti role
+        $status = $data_req['status'];
+        if ($status == 'diterima') {
+            User::find($data->user->id)->update([
+                'role' => 'pelapor'
+            ]);
+        } else {
+            User::find($data->user->id)->update([
+                'role' => null
+            ]);
+        }
+
 
         // return view('mail.pelapor-notif', compact('data'));
 

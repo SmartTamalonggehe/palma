@@ -48,7 +48,7 @@ class AuthController extends Controller
         //valid credential
         $validator = Validator::make($credentials, [
             'email' => 'required|email',
-            'password' => 'required|string|min:6|max:50'
+            'password' => 'required|string|min:4|max:50'
         ]);
 
         //Send failed response if request is not valid
@@ -61,22 +61,27 @@ class AuthController extends Controller
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
-                    'success' => false,
-                    'message' => 'Login credentials are invalid.',
+                    'judul' => 'Gagal',
+                    'type' => 'error',
+                    'pesan' => 'Kombinasi email dan password salah.',
                 ], 400);
             }
         } catch (JWTException $e) {
             return $credentials;
             return response()->json([
-                'success' => false,
-                'message' => 'Could not create token.',
+                'judul' => 'Gagal',
+                'type' => 'error',
+                'pesan' => 'Could not create token.',
             ], 500);
         }
 
         //Token created, return with success response and jwt token
         return response()->json([
-            'success' => true,
+            'judul' => 'Berhasil',
+            'type' => 'success',
             'token' => $token,
+            'pesan' => "Berhasil login anda akan dialihkan.",
+            'user' => User::with('pelapor')->where('email', $request->email)->first()
         ]);
     }
 
