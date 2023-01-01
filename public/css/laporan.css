@@ -1,0 +1,74 @@
+@import url("./reset.css");
+.container {
+    margin: 50px 40px 30px 80px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+.kop {
+    margin-bottom: 10mm;
+    width: 350px;
+}
+
+.head {
+    margin: auto;
+    width: 400px;
+    border-bottom: 1px solid black;
+}
+
+.head img {
+    width: 30px;
+}
+
+.isi-surat {
+    margin-top: 20px;
+}
+.container-foto {
+    float: left;
+    margin-right: 40px;
+}
+.img {
+    width: 3cm;
+    height: 4cm;
+    margin-bottom: 10px;
+}
+
+.container-ciri table {
+    margin-left: 130px;
+}
+.container-ciri table tr td {
+    padding: 3px;
+}
+.container-ciri table tr td:nth-child(2) {
+    width: 150px;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.identitas {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+.identitas ol {
+    list-style-type: decimal;
+}
+.identitas ol li {
+    padding: 2px;
+}
+
+.identitas .label {
+    display: inline-block;
+    width: 200px;
+    height: 13px;
+}
+
+.himbauan p {
+    line-height: 20px;
+}
