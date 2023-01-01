@@ -16,6 +16,6 @@ class LapOrangHilangController extends Controller
         // return $data;
         // return view('pdf.laporan.orang-hilang', compact('data'));
         $pdf = Pdf::loadView('pdf.laporan.orang-hilang', compact('data'));
-        return $pdf->stream('Laporan Orang Hilang.pdf');
+        return $pdf->download('Laporan Orang Hilang.pdf');
     }
 }
