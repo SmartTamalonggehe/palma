@@ -19,6 +19,8 @@ class OrangKetemuFactory extends Factory
             'orang_hilang_id' => $orang_hilang_id,
             'alamat_ketemu' => $this->faker->address(),
             'nm_penemu' => $this->faker->name(),
+            'longitude' => $this->faker->longitude($min = -180, $max = 180),
+            'latitude' => $this->faker->latitude($min = -90, $max = 90),
         ];
     }
 }

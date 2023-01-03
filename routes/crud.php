@@ -18,4 +18,5 @@ Route::resources([
 ]);
 
 Route::post('pelapor/ubah-status/{id}', [PelaporController::class, 'ubahStatus']);
+Route::post('orang-hilang/ubah-status/{id}', [OrangHilangController::class, 'ubahStatus']);
 // Route::get('pelapor/ubah-status/{id}', [PelaporController::class, 'ubahStatus']);

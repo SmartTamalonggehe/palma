@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\OrangHilang;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LaporanFactory extends Factory
@@ -13,8 +14,11 @@ class LaporanFactory extends Factory
      */
     public function definition()
     {
+        $orang_hilang_id = OrangHilang::all()->random()->id;
         return [
-            //
+            'orang_hilang_id' => $orang_hilang_id,
+            'no_laporan' => $this->faker->uuid(),
+            'tgl_laporan' => $this->faker->dateTimeBetween('-4 months', '-1 months'),
         ];
     }
 }

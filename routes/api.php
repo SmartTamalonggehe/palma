@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\LaporanAPI;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('laporan')->group(function () {
+    Route::get('/', [LaporanAPI::class, 'index'])->name('laporan.api.index');
+    Route::get('tahun', [LaporanAPI::class, 'tahun'])->name('laporan.api.tahun');
 });

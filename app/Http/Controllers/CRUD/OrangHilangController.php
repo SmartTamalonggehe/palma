@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\CRUD;
 
+use App\Models\Laporan;
 use App\Models\OrangHilang;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\TOOLS\ImgController;
 
@@ -56,7 +58,11 @@ class OrangHilangController extends Controller
     {
         $limit = $request->limit;
         $search = $request->search;
-        $data = OrangHilang::with('pelapor', 'lokasi')->where('nama', "like", "%$search%")
+        $data = OrangHilang::with(['pelapor' => function ($pelapor) {
+            $pelapor->with('user');
+        }])->with('lokasi')
+            ->doesntHave('orangKetemu')
+            ->where('nama', "like", "%$search%")
             ->paginate($limit);
         return response()->json($data, 200);
     }
@@ -183,6 +189,44 @@ class OrangHilangController extends Controller
             'judul' => 'Berhasil',
             'type' => 'success',
             'pesan' => 'Data berhasil dihapus.',
+            'data' => $data,
+        ];
+        return response()->json($pesan, 200);
+    }
+
+    public function ubahStatus(Request $request, $id)
+    {
+        $data_req = $request->all();
+        $status = $data_req['status'];
+        // find data by id
+        OrangHilang::find($id)->update([
+            'status' => $status
+        ]);
+
+        $data = OrangHilang::find($id);
+        // ganti role
+        if ($status == 'diterima') {
+            // hitung orang hilang
+            $count = Laporan::where('tgl_laporan', $data_req['tgl_laporan'])->get()->count();
+            $no_laporan = sprintf('%04d', $count + 1);
+            Laporan::create([
+                'orang_hilang_id' => $id,
+                'no_laporan' => $no_laporan,
+                'tgl_laporan' => $data_req['tgl_laporan'],
+            ]);
+        } else {
+            Laporan::where('orang_hilang_id', $id)->delete();
+        }
+
+
+        // return view('mail.pelapor-notif', compact('data'));
+        // kirim email
+        // $mail = $this->email->index($data);
+
+        $pesan = [
+            'judul' => 'Berhasil',
+            'type' => 'success',
+            // 'pesan' => "Status berhasil diubah dan $mail",
             'data' => $data,
         ];
         return response()->json($pesan, 200);

@@ -25,4 +25,9 @@ class OrangHilang extends Model
     {
         return $this->hasOne(Lokasi::class, 'orang_hilang_id', 'id');
     }
+
+    public function orangKetemu()
+    {
+        return $this->hasOne(OrangKetemu::class, 'orang_hilang_id', 'id');
+    }
 }

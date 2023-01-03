@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\CRUD;
 
-use App\Http\Controllers\Controller;
+use App\Models\Laporan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 
 class LaporanController extends Controller
 {
@@ -12,9 +14,19 @@ class LaporanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $limit = $request->limit;
+        $search = $request->search;
+        // $data = Laporan::with(['orangHilang' => function ($orangHilang) {
+        //     $orangHilang->with('pelapor');
+        // }])
+        //     ->whereHas('orangHilang', function (Builder $query) use ($search) {
+        //         $query->where('nama', 'like', "%$search%");
+        //     })
+        //     ->paginate($limit);
+        $data = Laporan::all();
+        return response()->json($data, 200);
     }
 
     /**

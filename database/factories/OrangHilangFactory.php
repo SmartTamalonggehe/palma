@@ -33,7 +33,7 @@ class OrangHilangFactory extends Factory
             'foto' => $this->faker->imageUrl(640, 480, 'animals', true),
             'hubungan' => $this->faker->randomElement(['adik', 'kakak', 'anak', 'mama', 'bapak']),
             'alamat' => $this->faker->address(),
-            'status' => $this->faker->randomElement(['proses', 'terima', 'tolak']),
+            'status' => $this->faker->randomElement(['diproses', 'ditolak']),
         ];
     }
 }

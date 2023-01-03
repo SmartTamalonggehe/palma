@@ -44,7 +44,7 @@ class OrangKetemuController extends Controller
         $limit = $request->limit;
         $search = $request->search;
         $data = OrangKetemu::with(['orangHilang' => function ($orangHilang) {
-            $orangHilang->with('distrik', 'pelapor');
+            $orangHilang->with('pelapor');
         }])
             ->whereHas('orangHilang', function (Builder $query) use ($search) {
                 $query->where('nama', 'like', "%$search%");
