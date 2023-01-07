@@ -31,6 +31,7 @@ class CreateOrangHilangTable extends Migration
             $table->string('foto');
             $table->text('hubungan');
             $table->text('alamat');
+            $table->date('tgl_hilang');
             $table->string('status', 30); // diterima, diproses, ditolak
             $table->timestamps();
         });

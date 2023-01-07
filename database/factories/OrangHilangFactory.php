@@ -34,6 +34,7 @@ class OrangHilangFactory extends Factory
             'hubungan' => $this->faker->randomElement(['adik', 'kakak', 'anak', 'mama', 'bapak']),
             'alamat' => $this->faker->address(),
             'status' => $this->faker->randomElement(['diproses', 'ditolak']),
+            'tgl_hilang' => $this->faker->dateTimeBetween('-6 months', '-1 months'),
         ];
     }
 }

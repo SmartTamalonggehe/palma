@@ -30,6 +30,7 @@ class OrangHilangController extends Controller
         $rules = [
             'nama' => 'required',
             'foto' => $required . '|mimes:jpeg,jpg,png,gif|max:2048',
+            'tgl_hilang' => 'required',
         ];
 
         $messages = [
@@ -37,6 +38,7 @@ class OrangHilangController extends Controller
             'foto.required' => 'Gambar harus diisi.',
             'foto.mimes' => 'Format gambar harus jpg, png, gif atau jpeg.',
             'foto.max' => 'Ukuran gambar maksimal 2MB.',
+            'tgl_hilang.required' => 'Tanggal kejadian harus diisi.',
         ];
         $validator = Validator::make($request, $rules, $messages);
 

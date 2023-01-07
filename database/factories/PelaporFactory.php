@@ -26,7 +26,7 @@ class PelaporFactory extends Factory
         ]);
         return [
             'distrik_id' => $distrik_id,
-            'nama' => $this->faker->name(),
+            'nama' => $user_id->name,
             'no_ktp' => $this->faker->numerify(),
             'no_kk' => $this->faker->numerify(),
             'no_hp' => $this->faker->numerify(),

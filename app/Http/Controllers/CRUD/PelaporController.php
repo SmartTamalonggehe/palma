@@ -199,7 +199,8 @@ class PelaporController extends Controller
         if ($foto_kk !== 'storage/default.png') {
             File::delete($foto_kk);
         }
-
+        // hapus user
+        User::destroy($data->user_id);
         // delete data
         $data->delete();
         $pesan = [
