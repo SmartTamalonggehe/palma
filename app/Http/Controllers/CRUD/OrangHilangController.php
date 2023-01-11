@@ -215,6 +215,7 @@ class OrangHilangController extends Controller
                 'orang_hilang_id' => $id,
                 'no_laporan' => $no_laporan,
                 'tgl_laporan' => $data_req['tgl_laporan'],
+                'batas_pencarian' => $data_req['tgl_laporan'],
             ]);
         } else {
             Laporan::where('orang_hilang_id', $id)->delete();

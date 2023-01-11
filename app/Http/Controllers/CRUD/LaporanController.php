@@ -18,14 +18,13 @@ class LaporanController extends Controller
     {
         $limit = $request->limit;
         $search = $request->search;
-        // $data = Laporan::with(['orangHilang' => function ($orangHilang) {
-        //     $orangHilang->with('pelapor');
-        // }])
-        //     ->whereHas('orangHilang', function (Builder $query) use ($search) {
-        //         $query->where('nama', 'like', "%$search%");
-        //     })
-        //     ->paginate($limit);
-        $data = Laporan::all();
+        $data = Laporan::with(['orangHilang' => function ($orangHilang) {
+            $orangHilang->with('pelapor');
+        }])
+            ->whereHas('orangHilang', function (Builder $query) use ($search) {
+                $query->where('nama', 'like', "%$search%");
+            })
+            ->paginate($limit);
         return response()->json($data, 200);
     }
 
@@ -81,7 +80,19 @@ class LaporanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data_req = $request->all();
+        // return $data_req;
+        // find data by id
+        Laporan::find($id)->update($data_req);
+
+        $data = Laporan::find($id);
+        $pesan = [
+            'judul' => 'Berhasil',
+            'type' => 'success',
+            'pesan' => 'Data berhasil diperbaharui.',
+            'data' => $data,
+        ];
+        return response()->json($pesan, 200);
     }
 
     /**

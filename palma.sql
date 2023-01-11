@@ -81,6 +81,7 @@ CREATE TABLE `laporan` (
   `orang_hilang_id` bigint unsigned NOT NULL,
   `no_laporan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tgl_laporan` date NOT NULL,
+  `batas_pencarian` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -139,7 +140,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +149,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2022_12_19_081601_create_distrik_table',1),(6,'2022_12_19_081624_create_pelapor_table',1),(7,'2022_12_19_081642_create_orang_hilang_table',1),(8,'2022_12_19_081654_create_lokasi_table',1),(9,'2022_12_19_081731_create_laporan_table',1),(10,'2022_12_19_081745_create_orang_ketemu_table',1),(11,'2023_01_02_102943_add_koordinat_to_orang_ketemu_table',1);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2022_12_19_081601_create_distrik_table',1),(6,'2022_12_19_081624_create_pelapor_table',1),(7,'2022_12_19_081642_create_orang_hilang_table',1),(8,'2022_12_19_081654_create_lokasi_table',1),(9,'2022_12_19_081731_create_laporan_table',1),(10,'2022_12_19_081745_create_orang_ketemu_table',1),(11,'2023_01_02_102943_add_koordinat_to_orang_ketemu_table',1),(12,'2023_01_11_020313_create_perkembangan_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,6 +292,35 @@ LOCK TABLES `pelapor` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `perkembangan`
+--
+
+DROP TABLE IF EXISTS `perkembangan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `perkembangan` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `laporan_id` bigint unsigned NOT NULL,
+  `tgl` date NOT NULL,
+  `detail` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `perkembangan_laporan_id_foreign` (`laporan_id`),
+  CONSTRAINT `perkembangan_laporan_id_foreign` FOREIGN KEY (`laporan_id`) REFERENCES `laporan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `perkembangan`
+--
+
+LOCK TABLES `perkembangan` WRITE;
+/*!40000 ALTER TABLE `perkembangan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `perkembangan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `personal_access_tokens`
 --
 
@@ -351,7 +381,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','admin@mail.com',NULL,'$2y$10$crwvhvmC2OqqfNWAzIKLbe28.WCmeiFIduNwvbZWvpzHKcmY6wI6G','12345678','admin',NULL,'2023-01-07 12:16:09','2023-01-07 12:16:09');
+INSERT INTO `users` VALUES (1,'admin','admin@mail.com',NULL,'$2y$10$99sfZAXfWddxphNHtBMV6u1rqW3V5lwWhCEF64.vLxKG9qRvI2m.W','12345678','admin',NULL,'2023-01-11 09:49:43','2023-01-11 09:49:43');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -364,4 +394,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-08  6:18:50
+-- Dump completed on 2023-01-12  3:50:27

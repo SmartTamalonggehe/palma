@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\LaporanAPI;
 use App\Http\Controllers\API\OrangHilangAPI;
+use App\Http\Controllers\API\PerkembanganApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +30,8 @@ Route::prefix('orang-hilang')->group(function () {
     $nm = 'orang-hilang';
     Route::get('/', [OrangHilangAPI::class, 'index'])->name("$nm.index");
     Route::get('/tahunan', [OrangHilangAPI::class, 'tahunan'])->name("$nm.tahunan");
+});
+
+Route::prefix('perkembangan')->group(function () {
+    Route::get('/', [PerkembanganApi::class, 'index'])->name('perkembangan.api.index');
 });

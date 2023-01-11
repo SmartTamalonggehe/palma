@@ -50,7 +50,7 @@ class PerkembanganController extends Controller
         $search = $request->search;
         $data = Perkembangan::with(['laporan' => function ($laporan) {
             $laporan->with('orangHilang');
-        }])->paginate($limit);
+        }])->orderBy('tgl', 'desc')->paginate($limit);
         return response()->json($data, 200);
     }
 
