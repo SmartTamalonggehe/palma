@@ -10,7 +10,7 @@ class LaporanAPI extends Controller
 {
     public function index()
     {
-        $data = Laporan::all();
+        $data = Laporan::with('orangHilang')->get();
         return response()->json($data);
     }
 

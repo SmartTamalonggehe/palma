@@ -19,6 +19,7 @@ class LaporanFactory extends Factory
             'orang_hilang_id' => $orang_hilang_id,
             'no_laporan' => $this->faker->uuid(),
             'tgl_laporan' => $this->faker->dateTimeBetween('-4 months', '-1 months'),
+            'batas_pencarian' => $this->faker->dateTimeBetween('-1 months', '+5 months'),
         ];
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLaporanTable extends Migration
+class CreatePerkembanganTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateLaporanTable extends Migration
      */
     public function up()
     {
-        Schema::create('laporan', function (Blueprint $table) {
+        Schema::create('perkembangan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('orang_hilang_id')->constrained('orang_hilang')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('no_laporan');
-            $table->date('tgl_laporan');
-            $table->date('batas_pencarian');
+            $table->foreignId('laporan_id')->constrained('laporan')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->date('tgl');
+            $table->text('detail');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateLaporanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('laporan');
+        Schema::dropIfExists('perkembangan');
     }
 }
