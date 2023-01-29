@@ -29,6 +29,7 @@ Route::prefix('laporan')->group(function () {
 Route::prefix('orang-hilang')->group(function () {
     $nm = 'orang-hilang';
     Route::get('/', [OrangHilangAPI::class, 'index'])->name("$nm.index");
+    Route::get('all', [OrangHilangAPI::class, 'all'])->name("$nm.all");
     Route::get('/tahunan', [OrangHilangAPI::class, 'tahunan'])->name("$nm.tahunan");
 });
 

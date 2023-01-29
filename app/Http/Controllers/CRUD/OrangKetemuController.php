@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CRUD;
 use App\Models\OrangKetemu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Perkembangan;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,7 +45,7 @@ class OrangKetemuController extends Controller
         $limit = $request->limit;
         $search = $request->search;
         $data = OrangKetemu::with(['orangHilang' => function ($orangHilang) {
-            $orangHilang->with('pelapor');
+            $orangHilang->with('pelapor', 'laporan');
         }])
             ->whereHas('orangHilang', function (Builder $query) use ($search) {
                 $query->where('nama', 'like', "%$search%");
@@ -80,8 +81,15 @@ class OrangKetemuController extends Controller
         OrangKetemu::create($data_req);
 
         $data = OrangKetemu::with(['orangHilang' => function ($orangHilang) {
-            $orangHilang->with('distrik', 'pelapor');
+            $orangHilang->with('pelapor', 'laporan');
         }])->latest()->first();
+        // isi panggil perkembangan
+        Perkembangan::create([
+            'laporan_id' => $data->orangHilang->laporan->id,
+            'tgl' => $data->created_at,
+            'detail' => "Ditemukan di daerah {$data_req['alamat_ketemu']} oleh {$data_req['nm_penemu']}",
+        ]);
+
         $pesan = [
             'judul' => 'Berhasil',
             'type' => 'success',

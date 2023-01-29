@@ -18,6 +18,17 @@ class OrangHilangAPI extends Controller
             ->get();
         return response()->json($data, 200);
     }
+
+    public function all()
+    {
+        $data = OrangHilang::with(['pelapor' => function ($pelapor) {
+            $pelapor->with('user');
+        }])->with('lokasi', 'orangKetemu')
+            ->where('status', 'diterima')
+            ->get();
+        return response()->json($data, 200);
+    }
+
     public function tahunan(Request $request)
     {
         $tahun = $request->tahun;
@@ -25,7 +36,7 @@ class OrangHilangAPI extends Controller
             $pelapor->with('user');
         }])->with('lokasi')
             ->where('status', 'diterima')
-            ->doesntHave('orangKetemu')
+            // ->doesntHave('orangKetemu')
             ->whereYear('tgl_hilang', $tahun)
             ->get();
         return response()->json($data, 200);
